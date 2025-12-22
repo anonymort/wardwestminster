@@ -65,6 +65,19 @@
         </div>
     </header>
 
+    {{/* Featured Image */}}
+    {{ with .Params.featured_image }}
+    <div class="article-featured-image">
+        <figure>
+            <img src="{{ . | relURL }}" alt="{{ $.Params.featured_image_alt | default $.Title }}"
+                class="featured-image">
+            {{ with $.Params.featured_image_caption }}
+            <figcaption>{{ . | markdownify }}</figcaption>
+            {{ end }}
+        </figure>
+    </div>
+    {{ end }}
+
 
 
     {{/* Article Content */}}

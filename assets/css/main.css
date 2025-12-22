@@ -1892,4 +1892,60 @@ body.no-scroll {
 
 .error-link:hover {
     background: var(--color-accent-light);
+}/* Featured Image */
+.article-featured-image {
+    max-width: var(--max-width-article);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    margin-top: calc(var(--spacing-xl) * -1);
+    /* Pull it up slightly if desired, or just simple margin */
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    z-index: 10;
+}
+
+/* Reset margin top if we want it to sit cleanly below */
+.article-featured-image {
+    margin-top: var(--spacing-lg);
+}
+
+.article-featured-image figure {
+    margin: 0;
+}
+
+.article-featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.article-featured-image figcaption {
+    text-align: center;
+    margin-top: var(--spacing-sm);
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+}
+
+/* Inline Images / Figures */
+.article-content figure {
+    margin: var(--spacing-xl) 0;
+    /* meaningful spacing */
+    background: var(--color-bg);
+    /* ensure it sits well */
+}
+
+.article-content figure.full-width {
+    max-width: 100vw;
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.article-content figure.wide {
+    max-width: var(--max-width-wide);
+    width: 100%;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
