@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default " en-GB" }}">
+
+<head>
+    {{ partial "head.html" . }}
+</head>
+
+<body class="{{ with .Section }}section-{{ . }}{{ end }}{{ if .IsHome }} is-home{{ end }}">
+
+    {{/* Progress Bar (only on single pages) */}}
+    {{ if .IsPage }}
+    <div class="progress-bar" id="progressBar"></div>
+    {{ end }}
+
+    {{/* Navigation */}}
+    {{ partial "nav.html" . }}
+
+    {{/* Main Content */}}
+    <main class="site-main" id="main">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    {{/* Footer */}}
+    {{ partial "footer.html" . }}
+
+    {{/* Back to Top Button */}}
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    {{/* Main JavaScript */}}
+    {{ $js := resources.Get "js/main.js" | minify | fingerprint }}
+    <script src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+
+    {{/* Custom Footer Scripts */}}
+    {{ partial "scripts-custom.html" . }}
+
+</body>
+
+</html>

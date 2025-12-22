@@ -1,0 +1,78 @@
+{{ define "main" }}
+
+{{/* Hero Section */}}
+<header class="home-hero">
+    <div class="hero-content">
+        <h1 class="hero-title">{{ .Site.Title }}</h1>
+        {{ with .Site.Params.tagline }}
+        <p class="hero-tagline">{{ . }}</p>
+        {{ else }}
+        <p class="hero-tagline">Medicine · Tech · Politics</p>
+        {{ end }}
+        <div class="hero-topics">
+            {{/* Configurable topic pills - set in params.topics or use defaults */}}
+            {{ $topics := .Site.Params.topics | default (slice "Medicine" "Tech" "Politics") }}
+            {{ range $topics }}
+            <a href="{{ " /categories/" | relLangURL }}{{ . | urlize }}/" class="topic-pill">{{ . }}</a>
+            {{ end }}
+        </div>
+    </div>
+</header>
+
+{{/* Featured Article (Latest) */}}
+{{ $sections := .Site.Params.mainSections | default (slice "posts") }}
+{{ $pages := where .Site.RegularPages "Type" "in" $sections }}
+{{ $featured := first 1 $pages }}
+{{ range $featured }}
+<section class="featured-article">
+    <div class="featured-content">
+        <span class="featured-label">Latest</span>
+        {{ with .Params.categories }}
+        <a href="{{ " /categories/" | relLangURL }}{{ index . 0 | urlize }}/" class="featured-category">{{ index . 0
+            }}</a>
+        {{ end }}
+        <h2 class="featured-title">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </h2>
+        {{ with .Description | default .Params.subtitle }}
+        <p class="featured-excerpt">{{ . }}</p>
+        {{ end }}
+        <div class="featured-meta">
+            {{ with .Params.author }}<span class="author">{{ . }}</span> · {{ end }}
+            <time datetime="{{ .Date.Format " 2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+            · {{ .ReadingTime }} min read
+        </div>
+        <a href="{{ .Permalink }}" class="featured-cta">Read article →</a>
+    </div>
+</section>
+{{ end }}
+
+{{/* Article Grid */}}
+{{ $remaining := after 1 $pages }}
+{{ if $remaining }}
+<section class="article-grid-section">
+    <div class="section-header-bar">
+        <h3 class="section-title">More Articles</h3>
+        <a href="{{ " /posts/" | relLangURL }}" class="section-link">View all →</a>
+    </div>
+
+    <div class="article-grid">
+        {{ range first 6 $remaining }}
+        <article class="grid-card">
+            <a href="{{ .Permalink }}" class="grid-card-link">
+                {{ with .Params.categories }}
+                <span class="grid-card-category">{{ index . 0 }}</span>
+                {{ end }}
+                <h3 class="grid-card-title">{{ .Title }}</h3>
+                {{ with .Description | default .Summary }}
+                <p class="grid-card-excerpt">{{ . | plainify | truncate 120 }}</p>
+                {{ end }}
+                <span class="grid-card-meta">{{ .Date.Format "2 Jan 2006" }} · {{ .ReadingTime }} min</span>
+            </a>
+        </article>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+
+{{ end }}

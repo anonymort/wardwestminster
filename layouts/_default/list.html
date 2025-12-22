@@ -1,0 +1,64 @@
+{{ define "main" }}
+
+{{/* Page Header */}}
+<header class="page-header">
+    {{ if .IsHome }}
+    <h1>{{ .Site.Title }}</h1>
+    {{ with .Site.Params.description }}
+    <p>{{ . }}</p>
+    {{ end }}
+    {{ else }}
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}
+    <p>{{ . }}</p>
+    {{ end }}
+    {{ end }}
+</header>
+
+{{/* Article List */}}
+<div class="article-list">
+    {{ $paginator := .Paginate .Pages }}
+
+    {{ range $index, $page := $paginator.Pages }}
+    <a href="{{ .Permalink }}" class="article-card{{ if and (eq $index 0) $.IsHome }} featured{{ end }}">
+
+        {{/* Category */}}
+        {{ with .Params.categories }}
+        <span class="article-card-category">{{ index . 0 }}</span>
+        {{ end }}
+
+        {{/* Title */}}
+        <h2 class="article-card-title">{{ .Title }}</h2>
+
+        {{/* Excerpt */}}
+        {{ with .Description | default .Summary }}
+        <p class="article-card-excerpt">{{ . | plainify | truncate 180 }}</p>
+        {{ end }}
+
+        {{/* Meta */}}
+        <p class="article-card-meta">
+            {{ .Date.Format "2 January 2006" }}
+            {{ with .Params.author }} · {{ . }}{{ end }}
+            · {{ .ReadingTime }} min read
+        </p>
+
+    </a>
+    {{ end }}
+
+    {{/* Pagination */}}
+    {{ if gt $paginator.TotalPages 1 }}
+    <nav class="pagination" aria-label="Pagination">
+        {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}" aria-label="Previous page">&larr; Newer</a>
+        {{ end }}
+
+        <span class="current">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
+
+        {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}" aria-label="Next page">Older &rarr;</a>
+        {{ end }}
+    </nav>
+    {{ end }}
+</div>
+
+{{ end }}

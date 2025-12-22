@@ -1,0 +1,8 @@
+{{/*
+    Section Break Shortcode
+    Usage: {{< break >}}
+    Custom symbol: {{< break symbol="◇" >}}
+*/}}
+<div class="section-break">
+    <span class="section-break-symbol">{{ .Get "symbol" | default "◆" }}</span>
+</div>

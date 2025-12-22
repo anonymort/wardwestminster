@@ -1,0 +1,23 @@
+{{ define "main" }}
+
+{{/* Page Header */}}
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+</header>
+
+{{/* Terms List */}}
+<div class="article-list">
+    <div class="terms-list">
+        {{ range .Pages }}
+        {{ $count := len .Pages }}
+        {{ $size := add 0.85 (mul $count 0.03) }}
+        {{ $clampedSize := math.Min 1.5 (math.Max 0.85 $size) }}
+        <a href="{{ .Permalink }}" class="tag" style="font-size: {{ $clampedSize }}rem;">
+            {{ .Title }}
+            <span class="term-count">({{ $count }})</span>
+        </a>
+        {{ end }}
+    </div>
+</div>
+
+{{ end }}

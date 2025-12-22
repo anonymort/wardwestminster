@@ -1,0 +1,20 @@
+{{/* Related Articles - Shows up to 3 related posts */}}
+{{ $related := .Site.RegularPages.Related . | first 3 }}
+{{ with $related }}
+<section class="related-articles">
+    <h2 class="related-title">Related Articles</h2>
+    <div class="related-grid">
+        {{ range . }}
+        <a href="{{ .Permalink }}" class="related-card">
+            {{ with .Params.categories }}
+            <p class="related-card-category">{{ index . 0 }}</p>
+            {{ end }}
+            <h3 class="related-card-title">{{ .Title }}</h3>
+            <p class="related-card-meta">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+            </p>
+        </a>
+        {{ end }}
+    </div>
+</section>
+{{ end }}

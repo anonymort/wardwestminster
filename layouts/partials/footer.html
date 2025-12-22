@@ -1,0 +1,49 @@
+<footer class="site-footer">
+    <div class="footer-content">
+        {{/* Brand Column */}}
+        <div class="footer-about">
+            <div class="footer-brand">
+                <span class="footer-brand-mark">&amp;</span>
+                <span class="footer-brand-text">{{ .Site.Title }}</span>
+            </div>
+            {{ with .Site.Params.description }}
+            <p class="footer-description">{{ . }}</p>
+            {{ end }}
+        </div>
+
+        {{/* Navigation Links */}}
+        {{ if .Site.Menus.footer }}
+        <div class="footer-links">
+            <h4>Navigation</h4>
+            <ul>
+                {{ range .Site.Menus.footer }}
+                <li>
+                    <a href="{{ .URL }}"{{ if .Params.external }} target="_blank" rel="noopener"{{ end }}>
+                        {{ .Name }}
+                    </a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+        {{ end }}
+
+        {{/* Categories / Topics */}}
+        {{ if .Site.Taxonomies.categories }}
+        <div class="footer-links">
+            <h4>Topics</h4>
+            <ul>
+                {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+                {{ if lt (len $taxonomy) 10 }}
+                <li><a href="{{ "/categories/" | relLangURL }}{{ $name | urlize }}/">{{ $name | humanize }}</a></li>
+                {{ end }}
+                {{ end }}
+            </ul>
+        </div>
+        {{ end }}
+
+        {{/* Bottom Bar */}}
+        <div class="footer-bottom">
+            <p>&copy; {{ now.Year }} {{ .Site.Title }}. {{ with .Site.Params.copyright }}{{ . }}{{ else }}All rights reserved.{{ end }}</p>
+        </div>
+    </div>
+</footer>

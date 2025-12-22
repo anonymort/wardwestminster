@@ -1,0 +1,30 @@
+{{/*
+  Medium-style Reading Time Calculator
+
+  Factors:
+  - Base text: 265 WPM (average adult reading speed)
+  - Images: +12 sec for first, decreasing by 1 sec each (min 3 sec)
+  - Code blocks: Add 30 sec per block (technical content reads slower)
+*/}}
+
+{{- $words := .WordCount -}}
+{{- $images := len (findRE `<img` .Content) -}}
+{{- $codeBlocks := len (findRE `<pre>` .Content) -}}
+
+{{/* Base reading time at 265 WPM */}}
+{{- $readingTime := div (float $words) 265.0 -}}
+
+{{/* Add time for images: 12s first, decreasing to 3s min */}}
+{{- $imageTime := 0.0 -}}
+{{- range seq $images -}}
+  {{- $seconds := math.Max 3.0 (sub 13.0 .) -}}
+  {{- $imageTime = add $imageTime (div $seconds 60.0) -}}
+{{- end -}}
+
+{{/* Add time for code blocks: 30 seconds each */}}
+{{- $codeTime := div (mul (float $codeBlocks) 30.0) 60.0 -}}
+
+{{/* Total reading time, minimum 1 minute */}}
+{{- $total := add $readingTime (add $imageTime $codeTime) -}}
+{{- $rounded := int (math.Round $total) -}}
+{{- if lt $rounded 1 }}1{{ else }}{{ $rounded }}{{ end -}}

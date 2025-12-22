@@ -1,0 +1,113 @@
+# Long Read Theme - Example Configuration
+# Copy this to your site's hugo.toml and customise
+
+baseURL = "https://example.com/"
+languageCode = "en-GB"
+title = "Ward&Westminster"
+theme = "wardwestminster"
+
+# Pagination
+[pagination]
+  pagerSize = 10
+
+# Enable useful features
+enableRobotsTXT = true
+enableGitInfo = false
+
+# Taxonomies
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+# Permalink structure
+[permalinks]
+  posts = "/:year/:month/:slug/"
+
+# Site parameters
+[params]
+  description = "Where medicine meets politics meets technology"
+  tagline = "Medicine · Tech · Politics"
+  author = "Dr Matt Kneale"
+  # favicon = "/favicon.ico"
+  # copyright = "All rights reserved."
+
+  # Hero section topic pills (defaults to Medicine, Tech, Politics)
+  topics = ["Medicine", "Tech", "Politics"]
+
+# Main navigation menu
+[[menus.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menus.main]]
+  name = "Archive"
+  url = "/posts/"
+  weight = 2
+
+[[menus.main]]
+  name = "Topics"
+  url = "/categories/"
+  weight = 3
+
+[[menus.main]]
+  name = "About"
+  url = "/about/"
+  weight = 4
+
+[[menus.main]]
+  name = "Search"
+  url = "/search/"
+  weight = 5
+
+# Footer navigation (optional)
+[[menus.footer]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menus.footer]]
+  name = "Archive"
+  url = "/posts/"
+  weight = 2
+
+[[menus.footer]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 3
+
+# Markdown rendering
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # Allow HTML in markdown
+  [markup.highlight]
+    style = "github"
+    lineNos = false
+    noClasses = false
+
+# Output formats
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+
+# Related content configuration
+[related]
+  includeNewer = true
+  threshold = 80
+  toLower = true
+  [[related.indices]]
+    name = "categories"
+    weight = 100
+  [[related.indices]]
+    name = "tags"
+    weight = 80
+  [[related.indices]]
+    name = "date"
+    weight = 10
+
+# Table of Contents
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+  ordered = false

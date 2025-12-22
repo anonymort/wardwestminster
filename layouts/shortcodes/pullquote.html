@@ -1,0 +1,11 @@
+{{/*
+    Pull Quote Shortcode
+    Usage: {{< pullquote >}}Quote text here{{< /pullquote >}}
+    With citation: {{< pullquote cite="Author Name" >}}Quote text{{< /pullquote >}}
+*/}}
+<blockquote class="pullquote">
+    <p>{{ .Inner | markdownify }}</p>
+    {{ with .Get "cite" }}
+    <cite>{{ . }}</cite>
+    {{ end }}
+</blockquote>

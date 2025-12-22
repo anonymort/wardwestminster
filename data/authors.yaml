@@ -1,0 +1,10 @@
+# Author data file
+# Reference authors in article front matter by exact name match
+# Example: author: "Dr Matt Kneale"
+
+"Dr Matt Kneale":
+  name: "Dr Matt Kneale"
+  bio: "Emergency medicine clinical fellow and Co-chair of DAUK. Advocate for doctors' rights and patient safety."
+  avatar: "/images/authors/matt-kneale.jpg"
+  twitter: "drmattuk"
+  bluesky: "drmattuk.bsky.social"

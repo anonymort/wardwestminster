@@ -1,0 +1,15 @@
+{{/*
+    Wide Figure Shortcode
+    For images that break out of the article column on desktop
+    Usage: {{< figure-wide src="/images/photo.jpg" alt="Description" caption="Photo caption" >}}
+*/}}
+<figure class="wide">
+    <img 
+        src="{{ .Get "src" }}" 
+        alt="{{ .Get "alt" | default "" }}"
+        {{ with .Get "loading" }}loading="{{ . }}"{{ else }}loading="lazy"{{ end }}
+    >
+    {{ with .Get "caption" }}
+    <figcaption>{{ . | markdownify }}</figcaption>
+    {{ end }}
+</figure>

@@ -1,0 +1,45 @@
+{{ define "main" }}
+
+{{ $authorName := .Title }}
+{{ $authorData := index .Site.Data.authors $authorName }}
+
+<header class="page-header">
+    <div class="author-header">
+        {{ with $authorData }}
+        {{ with .avatar }}
+        <img src="{{ . }}" alt="{{ $authorData.name }}" class="author-avatar-large">
+        {{ end }}
+        <div>
+            <h1 class="author-name">{{ .name }}</h1>
+            {{ with .bio }}<p class="author-bio-text">{{ . }}</p>{{ end }}
+        </div>
+        {{ else }}
+        <h1 class="author-name">{{ $authorName }}</h1>
+        {{ end }}
+    </div>
+</header>
+
+{{/* Articles by this author */}}
+{{ $authorPages := where .Site.RegularPages ".Params.author" $authorName }}
+
+<div class="article-list">
+    {{ range $authorPages }}
+    <a href="{{ .Permalink }}" class="article-card">
+        {{ with .Params.categories }}
+        <p class="article-card-category">{{ index . 0 }}</p>
+        {{ end }}
+        <h2 class="article-card-title">{{ .Title }}</h2>
+        {{ with .Description | default .Summary }}
+        <p class="article-card-excerpt">{{ . | plainify | truncate 150 }}</p>
+        {{ end }}
+        <p class="article-card-meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+            · {{ .ReadingTime }} min read
+        </p>
+    </a>
+    {{ else }}
+    <p>No articles by this author yet.</p>
+    {{ end }}
+</div>
+
+{{ end }}
