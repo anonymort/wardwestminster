@@ -69,8 +69,8 @@
     {{ with .Params.featured_image }}
     <div class="article-featured-image">
         <figure>
-            <img src="{{ . | relURL }}" alt="{{ $.Params.featured_image_alt | default $.Title }}"
-                class="featured-image">
+            {{ partial "picture.html" (dict "src" . "alt" ($.Params.featured_image_alt | default $.Title) "class"
+            "featured-image") }}
             {{ with $.Params.featured_image_caption }}
             <figcaption>{{ . | markdownify }}</figcaption>
             {{ end }}

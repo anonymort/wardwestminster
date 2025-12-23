@@ -1,0 +1,44 @@
+{{/*
+Partial: picture.html
+Purpose: Renders an optimized picture tag with WebP source and srcset.
+Usage: {{ partial "picture.html" (dict "src" .Params.image "alt" "Text" "class" "my-class" "loading" "lazy") }}
+*/}}
+
+{{ $src := .src }}
+{{ $alt := .alt | default "" }}
+{{ $class := .class | default "" }}
+{{ $loading := .loading | default "lazy" }}
+
+{{/* Attempt to find the image in remote, page bundle, or assets */}}
+{{ $img := "" }}
+
+{{/* 1. Remote Image */}}
+{{ if strings.HasPrefix $src "http" }}
+{{/* Pass through remote images simply */}}
+<img src="{{ $src }}" alt="{{ $alt }}" class="{{ $class }}" loading="{{ $loading }}">
+
+{{ else }}
+
+{{/* 2. Global Asset (remove leading slash for resources.Get) */}}
+{{ $cleanSrc := strings.TrimPrefix "/" $src }}
+{{ $img = resources.Get $cleanSrc }}
+
+{{ if $img }}
+{{/* Image Processing Logic */}}
+{{ $fallback := $img.Resize "1200x jpg" }}
+{{ $small := $img.Resize "480x webp" }}
+{{ $medium := $img.Resize "800x webp" }}
+{{ $large := $img.Resize "1200x webp" }}
+
+<picture>
+    <source srcset="{{ $small.RelPermalink }} 480w, {{ $medium.RelPermalink }} 800w, {{ $large.RelPermalink }} 1200w"
+        type="image/webp">
+    <img src="{{ $fallback.RelPermalink }}" alt="{{ $alt }}" class="{{ $class }}" loading="{{ $loading }}"
+        width="{{ $img.Width }}" height="{{ $img.Height }}">
+</picture>
+{{ else }}
+{{/* 3. Fallback: Static File (not processed) */}}
+<img src="{{ $src | relURL }}" alt="{{ $alt }}" class="{{ $class }}" loading="{{ $loading }}">
+{{ end }}
+
+{{ end }}

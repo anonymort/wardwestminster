@@ -7,7 +7,9 @@ subtitle: ""
 author: ""
 categories: []
 tags: []
-image: ""
+featured_image: ""
+featured_image_alt: ""
+featured_image_caption: ""
 ---
 
 Your article content here.
