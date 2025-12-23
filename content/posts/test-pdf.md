@@ -12,13 +12,13 @@ This post tests the new `{{< pdf >}}` shortcode.
 
 ## Embedded PDF
 
-Below is an embedded PDF (using a sample PDF from the web).
+Below is an embedded PDF (using a local file).
 
-{{< pdf src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" caption="A dummy PDF for testing purposes" >}}
+{{< pdf src="/pdf/test.pdf" caption="A test PDF hosted locally" >}}
 
 ## Height and Width Customization
 
-{{< pdf src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" height="400px" width="80%" caption="A smaller PDF embed" >}}
+{{< pdf src="/pdf/test.pdf" height="400px" width="80%" caption="A smaller PDF embed" >}}
 
 ## Fallback Test
 
