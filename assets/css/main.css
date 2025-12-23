@@ -1991,3 +1991,62 @@ body.no-scroll {
     margin-left: 50%;
     transform: translateX(-50%);
 }
+
+/* PDF Embed Styles */
+.pdf-container {
+    margin: var(--spacing-xl) 0;
+    width: 100%;
+}
+
+.pdf-container object {
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: var(--color-bg-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-fallback {
+    padding: var(--spacing-xl) var(--spacing-md);
+    text-align: center;
+    background: var(--color-bg-dark);
+    border-radius: 4px;
+    border: 2px dashed var(--color-border-strong);
+}
+
+.pdf-fallback p {
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-download:hover {
+    background: var(--color-accent-light);
+    transform: translateY(-2px);
+}
+
+.icon-download {
+    width: 20px;
+    height: 20px;
+}
+
+.pdf-caption {
+    margin-top: var(--spacing-sm);
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
