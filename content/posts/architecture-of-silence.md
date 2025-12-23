@@ -6,6 +6,9 @@ subtitle: "How institutional design enables patient safety failures to flourish 
 author: "Editorial"
 categories: ["Medicine"]
 tags: ["NHS", "Patient Safety", "Regulation", "Whistleblowing"]
+featured_image: "/images/header-typewriter.png"
+featured_image_alt: "A typewriter on a desk"
+featured_image_caption: "Silence, recorded."
 ---
 
 There is a particular kind of architecture that exists not in steel and glass but in silence. It is built from omissions, from the careful structuring of who may speak and who must listen, from the deliberate absence of windows where windows ought to be.

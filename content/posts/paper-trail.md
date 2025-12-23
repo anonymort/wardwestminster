@@ -6,6 +6,9 @@ subtitle: "Inside the painstaking work of FOI requests that hold the NHS and gov
 author: "Editorial"
 categories: ["Politics"]
 tags: ["FOI", "NHS", "Transparency", "Accountability"]
+featured_image: "/images/header-typewriter.png"
+featured_image_alt: "A typewriter on a desk"
+featured_image_caption: "The slow work of accountability."
 ---
 
 The response arrives after 47 days. Inside: 23 pages, 18 of them heavily redacted. Somewhere in this stack of paper lies an answer. Finding it will take months — and several appeals.

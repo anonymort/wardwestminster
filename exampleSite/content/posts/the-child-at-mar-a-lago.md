@@ -6,6 +6,9 @@ subtitle: "Newly released court documents place a 14-year-old victim in the room
 author: "Editorial"
 categories: ["Politics"]
 tags: ["Epstein", "Trump", "Mar-a-Lago", "FOIA", "Justice"]
+featured_image: "/images/header-typewriter.png"
+featured_image_alt: "A typewriter on a desk"
+featured_image_caption: "Disturbing details revealed."
 ---
 
 Jeffrey Epstein took a 14-year-old girl to Mar-a-Lago in 1994 and introduced her to Donald Trump, according to a [newly released court document](https://www.cbsnews.com/live-updates/epstein-files-released-2025/) in the first tranche of the so-called "Epstein files". The account, buried in hundreds of pages of material disclosed by the US Department of Justice under a new transparency law, adds a disturbing new detail to the long-scrutinised relationship between the late financier and the man who is now president of the United States.

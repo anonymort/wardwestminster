@@ -6,6 +6,9 @@ subtitle: "Inside the quiet revolution reshaping how doctors make decisions"
 author: "Editorial"
 categories: ["Tech"]
 tags: ["AI", "Healthcare", "Regulation", "Clinical Decision Support"]
+featured_image: "/images/header-typewriter.png"
+featured_image_alt: "A typewriter on a desk"
+featured_image_caption: "Algorithms as ink."
 ---
 
 The software makes a recommendation. The doctor reviews it, or doesn't. The patient never knows an algorithm was involved. This is the quiet revolution reshaping clinical medicine.
