@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Ward&Westminster is a Hugo theme for long-form editorial content. Mobile-first, dark mode support, optimized for reading.
+Ward&Westminster is a Hugo theme for long-form editorial content. Mobile-first, dark mode support, optimized for reading. The site is deployed to GitHub Pages at wardwestminster.com.
+
+**Hugo Version:** 0.153.2 (extended)
 
 ## Development Commands
 
@@ -15,7 +17,10 @@ cd exampleSite && hugo server --themesDir ../.. --theme wardwestminster
 # Run with drafts visible
 cd exampleSite && hugo server --themesDir ../.. --theme wardwestminster -D
 
-# Build production site
+# Build production site (from root - layouts are in root now)
+hugo --gc --minify
+
+# Build example site
 cd exampleSite && hugo --themesDir ../.. --theme wardwestminster
 
 # Create new content
@@ -23,6 +28,29 @@ hugo new posts/article-title.md
 ```
 
 ## Architecture
+
+### Directory Structure
+```
+wardwestminster/
+├── .github/workflows/hugo.yml  # GitHub Pages deployment
+├── archetypes/default.md       # New content template
+├── assets/
+│   ├── css/main.css           # All styles, variables, dark mode
+│   ├── js/main.js             # Nav, progress bar, animations
+│   └── images/                # Theme images (processed by Hugo)
+├── content/
+│   ├── posts/                 # Blog articles
+│   ├── authors/               # Author archive pages
+│   ├── about.md              # About page
+│   └── search.md             # Search page
+├── data/authors.yaml          # Author metadata
+├── layouts/                   # Hugo templates
+├── static/
+│   ├── CNAME                  # Custom domain
+│   └── pdf/                   # PDF files for embedding
+├── hugo.toml                  # Site configuration
+└── theme.toml                 # Theme metadata
+```
 
 ### Layout Hierarchy
 ```
@@ -32,6 +60,8 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
     └── layouts/_default/list.html    # Archive/category pages
     └── layouts/_default/taxonomy.html # Tag/category listing
     └── layouts/_default/terms.html   # Tag/category index
+    └── layouts/_default/search.html  # Client-side search
+    └── layouts/authors/              # Author pages
 ```
 
 ### Key Files
@@ -39,22 +69,19 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
 | File | Purpose |
 |------|---------|
 | `assets/css/main.css` | All styles, CSS variables, dark mode, animations |
-| `assets/js/main.js` | Nav, mobile menu, scroll animations, back-to-top, search |
+| `assets/js/main.js` | Nav, mobile menu, progress bar, scroll animations, back-to-top |
 | `layouts/partials/nav.html` | Fixed nav with mobile menu toggle |
+| `layouts/partials/head.html` | Meta tags, fonts, CSS pipeline |
+| `layouts/partials/footer.html` | Site footer |
+| `layouts/partials/picture.html` | Responsive image processing (WebP + srcset) |
 | `layouts/partials/reading-time.html` | Medium-style reading time (265 WPM + images + code) |
 | `layouts/partials/toc.html` | Auto-generated table of contents |
 | `layouts/partials/related.html` | Related articles section |
 | `layouts/partials/share.html` | Social share buttons (X, LinkedIn, Email, Copy) |
-| `layouts/_default/search.html` | Search page with client-side search |
-| `layouts/authors/` | Author archive pages |
-| `exampleSite/hugo.toml` | Example configuration |
-| `exampleSite/data/authors.yaml` | Author data (name, bio, avatar, social) |
-
-### CSS Variables (in main.css :root)
-
-Light/dark mode colors defined via `--color-*` variables. Override in `layouts/partials/head-custom.html`.
-
-Key variables: `--color-accent` (#8b2635), `--color-bg`, `--color-text`, `--font-display`, `--font-body`
+| `layouts/partials/head-custom.html` | User custom styles/meta (extension point) |
+| `layouts/partials/scripts-custom.html` | User custom JS/analytics (extension point) |
+| `data/authors.yaml` | Author data (name, bio, avatar, social) |
+| `hugo.toml` | Site configuration |
 
 ### Shortcodes
 
@@ -62,24 +89,90 @@ Key variables: `--color-accent` (#8b2635), `--color-bg`, `--color-text`, `--font
 {{< pullquote cite="Author" >}}Quote text{{< /pullquote >}}
 {{< break symbol="◇" >}}
 {{< figure-wide src="/image.jpg" alt="..." caption="..." >}}
+{{< pdf src="/pdf/document.pdf" width="100%" height="600px" caption="Optional caption" >}}
 ```
 
-### Extension Points
+### CSS Variables (in main.css :root)
 
-- `layouts/partials/head-custom.html` - Add custom styles/meta
-- `layouts/partials/scripts-custom.html` - Add custom JS/analytics
-- `data/authors.yaml` - Author bios with avatar support
+Light/dark mode colors defined via `--color-*` variables. Override in `layouts/partials/head-custom.html`.
+
+**Colors:**
+- `--color-accent`: #8b2635 (burgundy)
+- `--color-bg`, `--color-bg-dark`, `--color-bg-nav`
+- `--color-text`, `--color-text-secondary`, `--color-text-muted`
+- `--color-link`, `--color-link-hover`
+- `--color-quote-bg`, `--color-quote-border`
+- `--color-border`, `--color-border-strong`
+
+**Typography:**
+- `--font-display`: 'Cormorant Garamond' (headings)
+- `--font-body`: 'Source Sans 3' (body text)
+- `--font-mono`: 'JetBrains Mono' (code)
+
+**Layout:**
+- `--max-width-article`: 680px
+- `--max-width-wide`: 900px
+- `--max-width-site`: 1200px
+- `--nav-height`: 60px
+
+**Spacing:** `--spacing-xs` through `--spacing-2xl`
+
+**Dark Mode:** Automatic via `prefers-color-scheme`, or manual with `body.dark-mode` / `body.light-mode` classes.
+
+## Content Front Matter
+
+```yaml
+---
+title: "Article Title"
+date: 2025-12-15
+draft: false
+description: "SEO description and preview text"
+subtitle: "Optional subtitle shown below title"
+author: "Dr Matt Kneale"  # Must match key in data/authors.yaml
+categories: ["Tech"]       # Primary topic
+tags: ["AI", "Healthcare"] # Secondary topics
+featured_image: "/images/header.png"
+featured_image_alt: "Alt text for accessibility"
+featured_image_caption: "Optional image caption"
+---
+```
+
+Use `<!--more-->` to mark the summary break point.
+
+## Author System
+
+Authors are defined in two places:
+
+1. **`data/authors.yaml`** - Metadata (bio, avatar, social links):
+```yaml
+"Dr Matt Kneale":
+  name: "Dr Matt Kneale"
+  bio: "Emergency medicine clinical fellow..."
+  avatar: "/images/authors/matt-kneale.jpg"
+  twitter: "drmattuk"
+  bluesky: "drmattuk.bsky.social"
+```
+
+2. **`content/authors/{slug}.md`** - Archive pages for each author (minimal front matter, just title)
+
+## Responsive Images
+
+Use the `picture.html` partial for automatic WebP conversion and responsive srcset:
+```html
+{{ partial "picture.html" (dict "src" .Params.featured_image "alt" "Description" "class" "article-image" "loading" "lazy") }}
+```
+
+Generates 480w, 800w, 1200w WebP variants with JPG fallback.
 
 ## Configuration
 
 ```toml
-theme = "wardwestminster"
+baseURL = "https://wardwestminster.com/"
+languageCode = "en-GB"
+title = "Ward&Westminster"
 
-[params]
-  description = "Site description"
-  tagline = "Medicine · Tech · Politics"
-  author = "Author Name"
-  topics = ["Medicine", "Tech", "Politics"]  # Hero section pills
+[pagination]
+  pagerSize = 10
 
 [taxonomies]
   category = "categories"
@@ -88,8 +181,21 @@ theme = "wardwestminster"
 [permalinks]
   posts = "/:year/:month/:slug/"
 
+[params]
+  description = "Site description"
+  tagline = "Medicine · Tech · Politics"
+  author = "Author Name"
+  topics = ["Medicine", "Tech", "Politics"]  # Hero section pills
+
 [outputs]
   home = ["HTML", "RSS", "JSON"]  # JSON for search
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true  # Allow HTML in markdown
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
 
 [related]
   includeNewer = true
@@ -100,16 +206,24 @@ theme = "wardwestminster"
   [[related.indices]]
     name = "tags"
     weight = 80
-
-[markup.tableOfContents]
-  startLevel = 2
-  endLevel = 3
 ```
+
+## Deployment
+
+GitHub Actions workflow (`.github/workflows/hugo.yml`) automatically builds and deploys to GitHub Pages on push to main/master.
 
 ## Conventions
 
-- Mobile-first responsive (breakpoints: 640px, 768px, 1024px)
-- BEM-like class naming: `.article`, `.article-header`, `.article-title`
-- Dark mode via `prefers-color-scheme` media query
-- Animations respect `prefers-reduced-motion`
-- Vanilla JS only (no frameworks)
+- **Mobile-first responsive** - Breakpoints: 640px, 768px, 1024px
+- **BEM-like class naming** - `.article`, `.article-header`, `.article-title`
+- **Dark mode** - Automatic via `prefers-color-scheme` media query
+- **Reduced motion** - Animations respect `prefers-reduced-motion`
+- **Vanilla JS only** - No frameworks
+- **Image processing** - Place images in `assets/images/` for Hugo processing
+- **PDFs** - Place in `static/pdf/` for embedding
+
+## Extension Points
+
+- `layouts/partials/head-custom.html` - Add custom styles/meta
+- `layouts/partials/scripts-custom.html` - Add custom JS/analytics
+- `data/authors.yaml` - Author bios with avatar support
