@@ -46,6 +46,13 @@
         }
 
         progressBar.style.width = `${progress}%`;
+
+        // Show/hide progress bar based on progress
+        if (progress > 0) {
+            progressBar.classList.add('active');
+        } else {
+            progressBar.classList.remove('active');
+        }
     }
 
     // Initialize progress bar to 0 immediately to prevent flash of incorrect state
