@@ -11,13 +11,16 @@
     // ============================================
 
     const progressBar = document.getElementById('progressBar');
+    let progressInitialized = false;
 
     function updateProgress() {
         if (!progressBar) return;
 
-        // Clamp scrollTop to 0 to handle overscroll bounce (negative values on iOS/Mac)
-        const scrollTop = Math.max(0, window.scrollY);
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+        // Clamp scrollTop to valid range: 0 to docHeight
+        // This handles both top overscroll (negative) and bottom overscroll (exceeds max)
+        const scrollTop = Math.max(0, Math.min(window.scrollY, docHeight));
 
         // Handle edge cases
         let progress;
@@ -31,18 +34,25 @@
             progress = (scrollTop / docHeight) * 100;
         }
 
-        // Clamp between 0 and 100
+        // Hard clamp between 0 and 100 - no exceptions
         progress = Math.max(0, Math.min(100, progress));
 
-        // Use transform for smoother performance when at boundaries
-        // Disable transition at boundaries for instant feedback
-        if (progress <= 0 || progress >= 100) {
+        // Disable transition on first update and at boundaries for instant feedback
+        if (!progressInitialized || progress <= 0 || progress >= 100) {
             progressBar.style.transition = 'none';
+            progressInitialized = true;
         } else {
             progressBar.style.transition = '';
         }
 
         progressBar.style.width = `${progress}%`;
+    }
+
+    // Initialize progress bar to 0 immediately to prevent flash of incorrect state
+    function initProgress() {
+        if (!progressBar) return;
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
     }
 
     // ============================================
@@ -394,6 +404,9 @@
     // ============================================
 
     function init() {
+        // Initialize progress bar to 0 immediately to prevent flash
+        initProgress();
+
         // Event listeners
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('load', () => {
