@@ -27,6 +27,22 @@ cd exampleSite && hugo --themesDir ../.. --theme wardwestminster
 hugo new posts/article-title.md
 ```
 
+## Validation
+
+```bash
+# Validate Hugo config
+hugo config
+
+# Check for broken links (requires htmltest)
+hugo && htmltest
+
+# Preview production build locally
+hugo --gc --minify && python3 -m http.server -d public 8080
+
+# Check for Hugo warnings/errors
+hugo --logLevel info
+```
+
 ## Architecture
 
 ### Directory Structure
@@ -48,6 +64,10 @@ wardwestminster/
 ├── static/
 │   ├── CNAME                  # Custom domain
 │   └── pdf/                   # PDF files for embedding
+├── exampleSite/               # Demo site for theme development
+│   ├── hugo.toml             # Example configuration
+│   ├── content/              # Sample content
+│   └── data/                 # Sample data files
 ├── hugo.toml                  # Site configuration
 └── theme.toml                 # Theme metadata
 ```
@@ -61,6 +81,7 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
     └── layouts/_default/taxonomy.html # Tag/category listing
     └── layouts/_default/terms.html   # Tag/category index
     └── layouts/_default/search.html  # Client-side search
+    └── layouts/404.html              # Custom 404 page
     └── layouts/authors/              # Author pages
 ```
 
@@ -80,17 +101,38 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
 | `layouts/partials/share.html` | Social share buttons (X, LinkedIn, Email, Copy) |
 | `layouts/partials/head-custom.html` | User custom styles/meta (extension point) |
 | `layouts/partials/scripts-custom.html` | User custom JS/analytics (extension point) |
+| `layouts/404.html` | Custom 404 error page |
 | `data/authors.yaml` | Author data (name, bio, avatar, social) |
 | `hugo.toml` | Site configuration |
 
 ### Shortcodes
 
+**Pull Quote** - Highlighted quote with optional citation:
 ```markdown
-{{< pullquote cite="Author" >}}Quote text{{< /pullquote >}}
-{{< break symbol="◇" >}}
-{{< figure-wide src="/image.jpg" alt="..." caption="..." >}}
-{{< pdf src="/pdf/document.pdf" width="100%" height="600px" caption="Optional caption" >}}
+{{< pullquote >}}Quote text here{{< /pullquote >}}
+{{< pullquote cite="Author Name" >}}Quote with attribution{{< /pullquote >}}
 ```
+
+**Section Break** - Visual separator between sections:
+```markdown
+{{< break >}}              <!-- Default: ◆ -->
+{{< break symbol="◇" >}}   <!-- Custom symbol -->
+{{< break symbol="***" >}} <!-- Asterisks -->
+```
+
+**Wide Figure** - Full-width image breaking out of article column:
+```markdown
+{{< figure-wide src="/images/photo.jpg" alt="Description" >}}
+{{< figure-wide src="/images/photo.jpg" alt="Description" caption="Photo caption" loading="eager" >}}
+```
+Parameters: `src` (required), `alt`, `caption`, `loading` (default: "lazy")
+
+**PDF Embed** - Embedded PDF viewer with fallback:
+```markdown
+{{< pdf src="/pdf/document.pdf" >}}
+{{< pdf src="/pdf/document.pdf" width="100%" height="800px" caption="Document title" >}}
+```
+Parameters: `src` (required), `width` (default: "100%"), `height` (default: "600px"), `caption`
 
 ### CSS Variables (in main.css :root)
 
@@ -164,6 +206,51 @@ Use the `picture.html` partial for automatic WebP conversion and responsive srcs
 
 Generates 480w, 800w, 1200w WebP variants with JPG fallback.
 
+## Menu Configuration
+
+Menus are defined in `hugo.toml`. Two menus are available:
+
+**Main Navigation** (`menus.main`):
+```toml
+[[menus.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menus.main]]
+  name = "Archive"
+  url = "/posts/"
+  weight = 2
+
+[[menus.main]]
+  name = "Topics"
+  url = "/categories/"
+  weight = 3
+
+[[menus.main]]
+  name = "About"
+  url = "/about/"
+  weight = 4
+
+[[menus.main]]
+  name = "Search"
+  url = "/search/"
+  weight = 5
+```
+
+**Footer Navigation** (`menus.footer`):
+```toml
+[[menus.footer]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menus.footer]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 3
+```
+
 ## Configuration
 
 ```toml
@@ -227,3 +314,41 @@ GitHub Actions workflow (`.github/workflows/hugo.yml`) automatically builds and 
 - `layouts/partials/head-custom.html` - Add custom styles/meta
 - `layouts/partials/scripts-custom.html` - Add custom JS/analytics
 - `data/authors.yaml` - Author bios with avatar support
+
+## Troubleshooting
+
+### Images not processing / showing broken
+- Ensure images are in `assets/images/`, not `static/images/`
+- Check the image path starts with `/images/` (no `assets` prefix)
+- Remote images (http/https) are passed through without processing
+
+### Dark mode not switching
+- Check browser's `prefers-color-scheme` setting
+- Manual override: add `dark-mode` or `light-mode` class to `<body>`
+- CSS variables should cascade from `:root`
+
+### Search not working
+- Ensure `[outputs] home = ["HTML", "RSS", "JSON"]` is in config
+- Check that `/index.json` is generated in the build output
+- Search requires JavaScript enabled
+
+### 404 page not showing
+- GitHub Pages: ensure `404.html` exists in root of `public/`
+- Custom domains: check DNS and CNAME file in `static/`
+
+### PDF embedding shows grey box
+- Use local PDFs in `static/pdf/`, not remote URLs
+- Some browsers block cross-origin PDF embedding
+- Fallback download link is provided automatically
+
+### Hugo build errors
+```bash
+# Check Hugo version (requires 0.153.2+ extended)
+hugo version
+
+# Verbose build output
+hugo --logLevel debug
+
+# Clear cache and rebuild
+rm -rf resources/ public/ && hugo --gc
+```

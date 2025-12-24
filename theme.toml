@@ -3,13 +3,13 @@
 
 name = "Ward&Westminster"
 license = "MIT"
-licenselink = "https://github.com/yourusername/longread-theme/blob/main/LICENSE"
+licenselink = "https://github.com/anonymort/wardwestminster/blob/main/LICENSE"
 description = "An elegant, mobile-first Hugo theme for long-form journalism and editorial content"
-homepage = "https://github.com/yourusername/longread-theme"
+homepage = "https://github.com/anonymort/wardwestminster"
 tags = ["blog", "editorial", "longform", "journalism", "minimal", "reading", "magazine"]
 features = ["responsive", "dark-mode", "reading-progress", "micro-animations"]
-min_version = "0.80.0"
+min_version = "0.153.0"
 
 [author]
-  name = "Your Name"
-  homepage = "https://yoursite.com"
+  name = "Dr Matt Kneale"
+  homepage = "https://wardwestminster.com"
