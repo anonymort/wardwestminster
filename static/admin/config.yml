@@ -1,0 +1,308 @@
+# Decap CMS Configuration for Ward&Westminster
+# Documentation: https://decapcms.org/docs/
+
+backend:
+  name: github
+  repo: anonymort/wardwestminster
+  branch: main
+  # For local development: npx decap-server
+  # local_backend: true
+
+# Media files configuration
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+# Editorial workflow - drafts go through review before publishing
+publish_mode: editorial_workflow
+
+# Site URL for preview
+site_url: https://wardwestminster.com
+display_url: https://wardwestminster.com
+
+# Slug configuration
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# Collections
+collections:
+  # ========================================
+  # POSTS
+  # ========================================
+  - name: "posts"
+    label: "Posts"
+    label_singular: "Post"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "{{year}}/{{month}}/{{slug}}"
+    summary: "{{title}} - {{date | date('YYYY-MM-DD')}}"
+    sortable_fields:
+      fields: ["date", "title", "author"]
+      default:
+        field: date
+        direction: Descending
+    view_filters:
+      - label: "Drafts"
+        field: draft
+        pattern: true
+      - label: "Published"
+        field: draft
+        pattern: false
+    view_groups:
+      - label: "Category"
+        field: categories
+      - label: "Author"
+        field: author
+    fields:
+      # Basic fields
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "Subtitle"
+        name: "subtitle"
+        widget: "string"
+        required: false
+        hint: "Optional subtitle shown below the title"
+
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        required: true
+
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: true
+        hint: "Set to false to publish the article"
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        required: true
+        hint: "SEO description and preview text (aim for 150-160 characters)"
+
+      - label: "Author"
+        name: "author"
+        widget: "select"
+        options:
+          - "Dr Matt Kneale"
+          - "Editorial"
+          - "Antigravity"
+        required: true
+
+      # Taxonomies
+      - label: "Categories"
+        name: "categories"
+        widget: "list"
+        allow_add: true
+        default: ["Tech"]
+        hint: "Primary topic (e.g., Medicine, Tech, Politics)"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        allow_add: true
+        default: []
+        hint: "Secondary topics for this article"
+
+      # Featured Image
+      - label: "Featured Image"
+        name: "featured_image"
+        widget: "image"
+        required: false
+        allow_multiple: false
+        hint: "Main header image for the article"
+
+      - label: "Featured Image Alt Text"
+        name: "featured_image_alt"
+        widget: "string"
+        required: false
+        hint: "Accessibility description of the image"
+
+      - label: "Featured Image Caption"
+        name: "featured_image_caption"
+        widget: "string"
+        required: false
+        hint: "Optional caption shown below the image"
+
+      # Series
+      - label: "Series"
+        name: "series"
+        widget: "select"
+        options:
+          - "NHS Data Scandal"
+          - "AI in Healthcare"
+        required: false
+        multiple: true
+        hint: "Add to a multi-part series"
+
+      - label: "Series Part Number"
+        name: "series_weight"
+        widget: "number"
+        value_type: "int"
+        min: 1
+        required: false
+        hint: "Part number within the series (1 = Part 1, 2 = Part 2, etc.)"
+
+      # Corrections & Updates
+      - label: "Last Modified"
+        name: "lastmod"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        required: false
+        hint: "Date of last significant update"
+
+      - label: "Corrections"
+        name: "corrections"
+        widget: "list"
+        required: false
+        collapsed: true
+        minimize_collapsed: true
+        summary: "{{fields.type}} - {{fields.date}}"
+        hint: "Track corrections, updates, and clarifications"
+        fields:
+          - label: "Date"
+            name: "date"
+            widget: "datetime"
+            date_format: "YYYY-MM-DD"
+            time_format: false
+            required: true
+
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Correction (factual error)", value: "correction" }
+              - { label: "Update (new information)", value: "update" }
+              - { label: "Clarification (wording improvement)", value: "clarification" }
+            required: true
+
+          - label: "Description"
+            name: "description"
+            widget: "text"
+            required: true
+            hint: "Describe what was changed"
+
+      # Body content
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        required: true
+        hint: "Use <!--more--> to mark the summary break point"
+
+  # ========================================
+  # AUTHORS (content files for archives)
+  # ========================================
+  - name: "authors"
+    label: "Authors"
+    label_singular: "Author"
+    folder: "content/authors"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "title"
+    summary: "{{title}}"
+    fields:
+      - label: "Name"
+        name: "title"
+        widget: "string"
+        required: true
+
+  # ========================================
+  # AUTHOR PROFILES (data file)
+  # ========================================
+  - name: "author_profiles"
+    label: "Author Profiles"
+    label_singular: "Author Profile"
+    description: "Manage author bios, avatars, and social links"
+    editor:
+      preview: false
+    files:
+      - name: "authors_data"
+        label: "All Authors"
+        file: "data/authors.yaml"
+        fields:
+          - label: "Dr Matt Kneale"
+            name: "Dr Matt Kneale"
+            widget: "object"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Bio", name: "bio", widget: "text" }
+              - { label: "Avatar", name: "avatar", widget: "image", required: false }
+              - { label: "Twitter", name: "twitter", widget: "string", required: false, hint: "Without @" }
+              - { label: "Bluesky", name: "bluesky", widget: "string", required: false }
+
+          - label: "Editorial"
+            name: "Editorial"
+            widget: "object"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Bio", name: "bio", widget: "text" }
+              - { label: "Avatar", name: "avatar", widget: "image", required: false }
+
+          - label: "Antigravity"
+            name: "Antigravity"
+            widget: "object"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Bio", name: "bio", widget: "text" }
+              - { label: "Avatar", name: "avatar", widget: "image", required: false }
+
+  # ========================================
+  # SERIES DATA
+  # ========================================
+  - name: "series_data"
+    label: "Series"
+    label_singular: "Series"
+    description: "Manage multi-part article series"
+    editor:
+      preview: false
+    files:
+      - name: "series_yaml"
+        label: "All Series"
+        file: "data/series.yaml"
+        fields:
+          - label: "NHS Data Scandal"
+            name: "NHS Data Scandal"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Featured Image", name: "featured_image", widget: "image", required: false }
+
+          - label: "AI in Healthcare"
+            name: "AI in Healthcare"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Featured Image", name: "featured_image", widget: "image", required: false }
+
+  # ========================================
+  # PAGES
+  # ========================================
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "about"
+        label: "About Page"
+        file: "content/about.md"
+        fields:
+          - label: "Title"
+            name: "title"
+            widget: "string"
+
+          - label: "Draft"
+            name: "draft"
+            widget: "boolean"
+            default: false
+
+          - label: "Body"
+            name: "body"
+            widget: "markdown"
