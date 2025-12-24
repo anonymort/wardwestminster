@@ -20,11 +20,7 @@ By setting the `featured_image` param in the front matter, you can add a visual 
 
 ## Inline Images
 
-Further down the page, we can use inline images to illustrate specific points. Using the standard Hugo `figure` shortcode, we can include images with captions that are perfectly styled.
-
-{{< figure src="/images/inline-pen.png" title="The Pen is Mightier" caption="A close-up of a vintage fountain pen nib, ready to write." >}}
-
-Notice how the caption is subtly styled and the image has a gentle border radius to match the site's aesthetic.
+Further down the page, you can use inline images to illustrate specific points. Using the Hugo `figure` shortcode, you can include images with captions that are styled to match the site's aesthetic.
 
 ### How to use?
 
