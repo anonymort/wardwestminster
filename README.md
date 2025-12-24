@@ -15,6 +15,9 @@ An elegant, mobile-first Hugo theme for long-form journalism covering medicine, 
 - **Reduced motion support** for accessibility
 - **SEO optimised** with Open Graph and Twitter Card meta tags
 - **RSS feeds** for home and sections
+- **Social sharing** with X, Bluesky, LinkedIn, Facebook, Email, and copy-to-clipboard
+- **Multi-part series** with "Part X of Y" navigation and series landing pages
+- **Client-side search** with instant results
 
 ## Installation
 
@@ -50,6 +53,17 @@ See `exampleSite/hugo.toml` for a complete configuration example, including:
 - Site parameters
 - Taxonomy setup
 - Permalink structure
+- Social media handles for sharing
+
+### Social Sharing
+
+Configure your social handles for share buttons:
+
+```toml
+[params.social]
+  twitter = "yourhandle"
+  bluesky = "yourhandle.bsky.social"
+```
 
 ## Content
 
@@ -72,7 +86,9 @@ subtitle: "An optional longer subtitle displayed below the title"
 author: "Author Name"
 categories: ["Investigation"]
 tags: ["topic", "another-topic"]
-image: "/images/featured.jpg"
+featured_image: "/images/featured.jpg"
+series: ["Series Name"]    # Optional: for multi-part articles
+series_weight: 1           # Optional: part number (1, 2, 3...)
 ---
 ```
 
