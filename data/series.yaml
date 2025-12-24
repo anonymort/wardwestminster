@@ -1,0 +1,14 @@
+# Series data file
+# Define metadata for multi-part article series
+# Reference series in article front matter: series: ["Series Name"]
+# Use series_weight to set the order (1 = Part 1, 2 = Part 2, etc.)
+
+"NHS Data Scandal":
+  title: "NHS Data Scandal"
+  description: "An investigative series examining the mishandling of patient data in the NHS"
+  featured_image: ""
+
+"AI in Healthcare":
+  title: "AI in Healthcare"
+  description: "Exploring the transformative potential and ethical challenges of artificial intelligence in medicine"
+  featured_image: ""

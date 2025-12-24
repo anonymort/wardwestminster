@@ -1,0 +1,28 @@
+{{ define "main" }}
+
+{{/* Page Header */}}
+<header class="page-header">
+    <h1>Series</h1>
+    <p>Multi-part investigative articles and in-depth explorations</p>
+</header>
+
+{{/* Series Grid */}}
+<div class="article-list">
+    <div class="series-grid">
+        {{ range .Pages }}
+        {{ $seriesData := index $.Site.Data.series .Title }}
+        <a href="{{ .Permalink }}" class="series-overview-card">
+            <div class="series-overview-badge">{{ len .Pages }} {{ if eq (len .Pages) 1 }}Part{{ else }}Parts{{ end }}</div>
+            <h2 class="series-overview-title">{{ .Title }}</h2>
+            {{ with $seriesData }}
+                {{ with .description }}
+                <p class="series-overview-description">{{ . }}</p>
+                {{ end }}
+            {{ end }}
+            <span class="series-overview-cta">Read the series &rarr;</span>
+        </a>
+        {{ end }}
+    </div>
+</div>
+
+{{ end }}
