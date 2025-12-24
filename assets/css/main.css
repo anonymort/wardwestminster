@@ -159,8 +159,10 @@ body {
     height: 3px;
     background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
     z-index: 1001; /* z-index: progress-bar */
-    transition: width 0.1s ease-out;
+    transition: width 0.08s linear;
     pointer-events: none;
+    will-change: width;
+    transform: translateZ(0); /* Force GPU layer for smoother rendering */
 }
 
 /* ============================================
