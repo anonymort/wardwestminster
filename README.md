@@ -2,8 +2,6 @@
 
 An elegant, mobile-first Hugo theme for long-form journalism covering medicine, technology, and politics. Inspired by Guardian Long Reads and quality magazine publishing.
 
-![Long Read Theme](screenshot.png)
-
 ## Features
 
 - **Mobile-first design** with smooth scaling to desktop
