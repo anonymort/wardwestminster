@@ -15,10 +15,34 @@
     function updateProgress() {
         if (!progressBar) return;
 
-        const scrollTop = window.scrollY;
+        // Clamp scrollTop to 0 to handle overscroll bounce (negative values on iOS/Mac)
+        const scrollTop = Math.max(0, window.scrollY);
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-        progressBar.style.width = `${Math.min(progress, 100)}%`;
+
+        // Handle edge cases
+        let progress;
+        if (docHeight <= 0) {
+            // Document is shorter than or equal to viewport - consider it 100% read
+            progress = 100;
+        } else if (scrollTop <= 1) {
+            // At or very near top - snap to 0 immediately
+            progress = 0;
+        } else {
+            progress = (scrollTop / docHeight) * 100;
+        }
+
+        // Clamp between 0 and 100
+        progress = Math.max(0, Math.min(100, progress));
+
+        // Use transform for smoother performance when at boundaries
+        // Disable transition at boundaries for instant feedback
+        if (progress <= 0 || progress >= 100) {
+            progressBar.style.transition = 'none';
+        } else {
+            progressBar.style.transition = '';
+        }
+
+        progressBar.style.width = `${progress}%`;
     }
 
     // ============================================
