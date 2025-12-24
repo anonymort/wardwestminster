@@ -1,0 +1,110 @@
+{{/*
+  Series Navigation Partial
+  Shows "Part X of Y" navigation for multi-part articles
+
+  Usage: {{ partial "series-nav.html" . }}
+
+  Expects front matter:
+    series: ["Series Name"]
+    series_weight: 1  (optional, defaults to date order)
+*/}}
+
+{{ with .Params.series }}
+{{ $currentPage := $ }}
+{{ $seriesName := index . 0 }}
+
+{{/* Get all pages in this series, ordered by series_weight */}}
+{{ $seriesPages := where $.Site.RegularPages "Params.series" "intersect" (slice $seriesName) }}
+{{ $seriesPages = $seriesPages.ByParam "series_weight" }}
+{{ $totalParts := len $seriesPages }}
+
+{{/* Find current position and adjacent pages */}}
+{{ $currentIndex := 0 }}
+{{ $prevPage := false }}
+{{ $nextPage := false }}
+
+{{ range $index, $page := $seriesPages }}
+    {{ if eq $page.Permalink $currentPage.Permalink }}
+        {{ $currentIndex = add $index 1 }}
+    {{ end }}
+{{ end }}
+
+{{ range $index, $page := $seriesPages }}
+    {{ if eq (add $index 2) $currentIndex }}
+        {{ $prevPage = $page }}
+    {{ end }}
+    {{ if eq $index $currentIndex }}
+        {{ $nextPage = $page }}
+    {{ end }}
+{{ end }}
+
+{{/* Get series metadata */}}
+{{ $seriesData := index $.Site.Data.series $seriesName }}
+
+<nav class="series-nav" aria-label="Series navigation">
+    <div class="series-nav-header">
+        <a href="{{ "/series/" | relLangURL }}{{ $seriesName | urlize }}/" class="series-nav-title">
+            <span class="series-nav-label">Series</span>
+            <span class="series-nav-name">{{ $seriesName }}</span>
+        </a>
+        <span class="series-nav-progress">Part {{ $currentIndex }} of {{ $totalParts }}</span>
+    </div>
+
+    {{ if or $prevPage $nextPage }}
+    <div class="series-nav-links">
+        {{ if $prevPage }}
+        <a href="{{ $prevPage.Permalink }}" class="series-nav-link series-nav-prev">
+            <span class="series-nav-direction">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous
+            </span>
+            <span class="series-nav-link-title">{{ $prevPage.Title | truncate 50 }}</span>
+        </a>
+        {{ else }}
+        <div class="series-nav-link series-nav-prev series-nav-disabled"></div>
+        {{ end }}
+
+        {{ if $nextPage }}
+        <a href="{{ $nextPage.Permalink }}" class="series-nav-link series-nav-next">
+            <span class="series-nav-direction">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </span>
+            <span class="series-nav-link-title">{{ $nextPage.Title | truncate 50 }}</span>
+        </a>
+        {{ else }}
+        <div class="series-nav-link series-nav-next series-nav-disabled"></div>
+        {{ end }}
+    </div>
+    {{ end }}
+
+    {{/* Expandable list of all parts */}}
+    <details class="series-nav-all">
+        <summary class="series-nav-all-toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            View all parts
+        </summary>
+        <ol class="series-nav-all-list">
+            {{ range $index, $page := $seriesPages }}
+            <li class="{{ if eq $page.Permalink $currentPage.Permalink }}current{{ end }}">
+                {{ if eq $page.Permalink $currentPage.Permalink }}
+                <span class="series-nav-all-current">
+                    <strong>Part {{ add $index 1 }}:</strong> {{ $page.Title }}
+                </span>
+                {{ else }}
+                <a href="{{ $page.Permalink }}">
+                    <strong>Part {{ add $index 1 }}:</strong> {{ $page.Title }}
+                </a>
+                {{ end }}
+            </li>
+            {{ end }}
+        </ol>
+    </details>
+</nav>
+{{ end }}

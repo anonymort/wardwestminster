@@ -62,6 +62,8 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
     └── layouts/_default/terms.html   # Tag/category index
     └── layouts/_default/search.html  # Client-side search
     └── layouts/authors/              # Author pages
+    └── layouts/series/list.html      # Series landing page
+    └── layouts/series/terms.html     # Series index page
 ```
 
 ### Key Files
@@ -80,7 +82,9 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
 | `layouts/partials/share.html` | Social share buttons (X, LinkedIn, Email, Copy) |
 | `layouts/partials/head-custom.html` | User custom styles/meta (extension point) |
 | `layouts/partials/scripts-custom.html` | User custom JS/analytics (extension point) |
+| `layouts/partials/series-nav.html` | Series "Part X of Y" navigation |
 | `data/authors.yaml` | Author data (name, bio, avatar, social) |
+| `data/series.yaml` | Series metadata (title, description) |
 | `hugo.toml` | Site configuration |
 
 ### Shortcodes
@@ -134,10 +138,51 @@ tags: ["AI", "Healthcare"] # Secondary topics
 featured_image: "/images/header.png"
 featured_image_alt: "Alt text for accessibility"
 featured_image_caption: "Optional image caption"
+series: ["Series Name"]    # Optional: links article to a series
+series_weight: 1           # Optional: order within series (Part 1, 2, 3...)
 ---
 ```
 
 Use `<!--more-->` to mark the summary break point.
+
+## Series / Multi-Part Articles
+
+The theme supports multi-part article series with "Part X of Y" navigation, series landing pages, and inter-article navigation.
+
+### Creating a Series
+
+1. **Add series front matter** to each article in the series:
+```yaml
+series: ["NHS Data Scandal"]  # Series name (creates taxonomy)
+series_weight: 1               # Part number (1, 2, 3...)
+```
+
+2. **Optionally add series metadata** in `data/series.yaml`:
+```yaml
+"NHS Data Scandal":
+  title: "NHS Data Scandal"
+  description: "An investigative series examining data governance failures"
+  featured_image: "/images/series/nhs-data.jpg"
+```
+
+### Series Features
+
+- **Series badge** in article header showing "Series Name · Part X of Y"
+- **Series navigation box** above and below article content with:
+  - Link to series landing page
+  - Previous/Next article links
+  - Expandable list of all parts
+- **Series landing page** at `/series/series-name/` listing all parts in order
+- **Series index page** at `/series/` showing all available series
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `layouts/partials/series-nav.html` | Series navigation partial |
+| `layouts/series/list.html` | Individual series landing page |
+| `layouts/series/terms.html` | All series index page |
+| `data/series.yaml` | Series metadata (title, description) |
 
 ## Author System
 
@@ -177,6 +222,7 @@ title = "Ward&Westminster"
 [taxonomies]
   category = "categories"
   tag = "tags"
+  series = "series"
 
 [permalinks]
   posts = "/:year/:month/:slug/"

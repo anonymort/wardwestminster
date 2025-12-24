@@ -18,6 +18,7 @@ enableGitInfo = false
 [taxonomies]
   category = "categories"
   tag = "tags"
+  series = "series"
 
 # Permalink structure
 [permalinks]
@@ -56,14 +57,19 @@ enableGitInfo = false
   weight = 3
 
 [[menus.main]]
+  name = "Series"
+  url = "/series/"
+  weight = 4
+
+[[menus.main]]
   name = "About"
   url = "/about/"
-  weight = 4
+  weight = 5
 
 [[menus.main]]
   name = "Search"
   url = "/search/"
-  weight = 5
+  weight = 6
 
 # Footer navigation (optional)
 [[menus.footer]]
