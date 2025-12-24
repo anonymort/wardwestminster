@@ -1,0 +1,54 @@
+{{/*
+  Corrections and Versioning Partial
+  Shows article updates, corrections, and clarifications
+
+  Usage: {{ partial "corrections.html" . }}
+
+  Expects front matter:
+    lastmod: 2025-01-15              # Last modified date (optional)
+    corrections:                      # Array of corrections (optional)
+      - date: 2025-01-15
+        type: correction             # correction, update, or clarification
+        description: "Fixed error in paragraph about..."
+*/}}
+
+{{ $hasCorrections := .Params.corrections }}
+{{ $hasLastmod := and .Params.lastmod (ne (.Params.lastmod.Format "2006-01-02") (.Date.Format "2006-01-02")) }}
+
+{{ if or $hasCorrections $hasLastmod }}
+<aside class="article-corrections" aria-label="Article corrections and updates">
+    <div class="corrections-header">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+        <span class="corrections-title">Corrections &amp; Updates</span>
+    </div>
+
+    {{ with .Params.corrections }}
+    <ul class="corrections-list">
+        {{ range . }}
+        <li class="correction-item correction-{{ .type | default "update" }}">
+            <span class="correction-badge correction-badge-{{ .type | default "update" }}">
+                {{ if eq .type "correction" }}Correction
+                {{ else if eq .type "clarification" }}Clarification
+                {{ else }}Update{{ end }}
+            </span>
+            <time class="correction-date" datetime="{{ .date.Format "2006-01-02" }}">
+                {{ .date.Format "2 January 2006" }}
+            </time>
+            <p class="correction-description">{{ .description | markdownify }}</p>
+        </li>
+        {{ end }}
+    </ul>
+    {{ end }}
+
+    {{ if and $hasLastmod (not $hasCorrections) }}
+    <p class="corrections-lastmod">
+        This article was last updated on
+        <time datetime="{{ .Params.lastmod.Format "2006-01-02" }}" itemprop="dateModified">
+            {{ .Params.lastmod.Format "2 January 2006" }}
+        </time>.
+    </p>
+    {{ end }}
+</aside>
+{{ end }}

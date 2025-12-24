@@ -2493,3 +2493,214 @@ body.no-scroll {
         justify-content: flex-start;
     }
 }
+
+/* ============================================
+   Corrections & Versioning
+   ============================================ */
+
+.article-corrections {
+    max-width: var(--max-width-article);
+    margin: 0 auto var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(135deg, rgba(139, 38, 53, 0.04) 0%, rgba(139, 38, 53, 0.02) 100%);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 0 6px 6px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .article-corrections {
+        background: linear-gradient(135deg, rgba(139, 38, 53, 0.12) 0%, rgba(139, 38, 53, 0.06) 100%);
+    }
+}
+
+body.dark-mode .article-corrections {
+    background: linear-gradient(135deg, rgba(139, 38, 53, 0.12) 0%, rgba(139, 38, 53, 0.06) 100%);
+}
+
+body.light-mode .article-corrections {
+    background: linear-gradient(135deg, rgba(139, 38, 53, 0.04) 0%, rgba(139, 38, 53, 0.02) 100%);
+}
+
+.corrections-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.corrections-header svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+.corrections-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.corrections-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.correction-item {
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.correction-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.correction-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+}
+
+.correction-badge-correction {
+    background: #dc3545;
+    color: white;
+}
+
+.correction-badge-update {
+    background: var(--color-accent);
+    color: white;
+}
+
+.correction-badge-clarification {
+    background: #0d6efd;
+    color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+    .correction-badge-correction {
+        background: #f55c6a;
+        color: #1a1a1a;
+    }
+
+    .correction-badge-update {
+        background: #e07a7a;
+        color: #1a1a1a;
+    }
+
+    .correction-badge-clarification {
+        background: #6ea8fe;
+        color: #1a1a1a;
+    }
+}
+
+body.dark-mode .correction-badge-correction {
+    background: #f55c6a;
+    color: #1a1a1a;
+}
+
+body.dark-mode .correction-badge-update {
+    background: #e07a7a;
+    color: #1a1a1a;
+}
+
+body.dark-mode .correction-badge-clarification {
+    background: #6ea8fe;
+    color: #1a1a1a;
+}
+
+body.light-mode .correction-badge-correction {
+    background: #dc3545;
+    color: white;
+}
+
+body.light-mode .correction-badge-update {
+    background: var(--color-accent);
+    color: white;
+}
+
+body.light-mode .correction-badge-clarification {
+    background: #0d6efd;
+    color: white;
+}
+
+.correction-date {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.correction-description {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.correction-description a {
+    color: var(--color-link);
+}
+
+.correction-description a:hover {
+    color: var(--color-link-hover);
+}
+
+.corrections-lastmod {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+.corrections-lastmod time {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+/* Article meta updated indicator */
+.article-meta-updated {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.article-meta-updated svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+}
+
+/* Mobile adjustments for corrections */
+@media (max-width: 640px) {
+    .article-corrections {
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-left: var(--spacing-md);
+        margin-right: var(--spacing-md);
+    }
+
+    .corrections-header {
+        flex-wrap: wrap;
+    }
+
+    .correction-badge {
+        display: block;
+        width: fit-content;
+        margin-bottom: 0.35rem;
+    }
+
+    .correction-date {
+        display: block;
+    }
+}

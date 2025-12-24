@@ -83,6 +83,7 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
 | `layouts/partials/head-custom.html` | User custom styles/meta (extension point) |
 | `layouts/partials/scripts-custom.html` | User custom JS/analytics (extension point) |
 | `layouts/partials/series-nav.html` | Series "Part X of Y" navigation |
+| `layouts/partials/corrections.html` | Corrections and versioning display |
 | `data/authors.yaml` | Author data (name, bio, avatar, social) |
 | `data/series.yaml` | Series metadata (title, description) |
 | `hugo.toml` | Site configuration |
@@ -140,6 +141,14 @@ featured_image_alt: "Alt text for accessibility"
 featured_image_caption: "Optional image caption"
 series: ["Series Name"]    # Optional: links article to a series
 series_weight: 1           # Optional: order within series (Part 1, 2, 3...)
+lastmod: 2025-12-20        # Optional: last modified date (shows "Updated" in meta)
+corrections:               # Optional: list of corrections/updates
+  - date: 2025-12-18
+    type: correction       # correction, update, or clarification
+    description: "Fixed error in statistics paragraph"
+  - date: 2025-12-20
+    type: update
+    description: "Added new data from recent study"
 ---
 ```
 
@@ -183,6 +192,52 @@ series_weight: 1               # Part number (1, 2, 3...)
 | `layouts/series/list.html` | Individual series landing page |
 | `layouts/series/terms.html` | All series index page |
 | `data/series.yaml` | Series metadata (title, description) |
+
+## Corrections & Versioning
+
+The theme supports article corrections, updates, and version tracking with visual indicators for transparency.
+
+### Adding Corrections
+
+Add corrections to article front matter:
+```yaml
+lastmod: 2025-12-20  # Last modified date
+corrections:
+  - date: 2025-12-18
+    type: correction     # Red badge - factual errors
+    description: "Corrected the reported percentage from 45% to 35%"
+  - date: 2025-12-20
+    type: update         # Burgundy badge - new information
+    description: "Added response from NHS spokesperson"
+  - date: 2025-12-19
+    type: clarification  # Blue badge - clarity improvements
+    description: "Clarified timeline of events in paragraph 3"
+```
+
+### Correction Types
+
+| Type | Badge Color | Use Case |
+|------|-------------|----------|
+| `correction` | Red | Factual errors, data mistakes, misquotes |
+| `update` | Burgundy | New information, follow-up developments |
+| `clarification` | Blue | Wording improvements, added context |
+
+### Features
+
+- **"Updated" indicator** in article meta (next to publish date) when `lastmod` differs from `date`
+- **Corrections box** displayed above article content with:
+  - Correction type badge
+  - Date of correction
+  - Description (supports markdown)
+- **Schema.org support** with `dateModified` for SEO
+- **Dark mode aware** styling
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `layouts/partials/corrections.html` | Corrections display partial |
+| `assets/css/main.css` | Corrections styling (search for "Corrections & Versioning") |
 
 ## Author System
 
