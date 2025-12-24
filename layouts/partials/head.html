@@ -19,17 +19,23 @@
 <meta property="og:url" content="{{ .Permalink }}">
 {{ with .Site.Title }}
 <meta property="og:site_name" content="{{ . }}">{{ end }}
+
+{{/* Social Media Image - works for both OG and Twitter */}}
+{{ $socialImage := "" }}
 {{ if .IsPage }}
-{{ $image := .Params.featured_image | default .Params.image }}
-{{ with $image }}
-{{ $imgResource := resources.Get (strings.TrimPrefix "/" .) }}
-{{ if $imgResource }}
-<meta property="og:image" content="{{ $imgResource.Permalink }}">
-{{ else }}
+{{ $socialImage = .Params.featured_image | default .Params.image }}
+{{ end }}
+{{ if not $socialImage }}
+{{ $socialImage = .Site.Params.default_og_image }}
+{{ end }}
+{{ with $socialImage }}
 <meta property="og:image" content="{{ . | absURL }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 {{ end }}
-{{ end }}
-<meta property="article:published_time" content="{{ .Date.Format " 2006-01-02T15:04:05Z07:00" }}">
+
+{{ if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
 {{ with .Params.author }}
 <meta property="article:author" content="{{ . }}">{{ end }}
 {{ end }}
@@ -39,6 +45,9 @@
 <meta name="twitter:title" content="{{ .Title }}">
 {{ with .Description | default .Site.Params.description }}
 <meta name="twitter:description" content="{{ . }}">
+{{ end }}
+{{ with $socialImage }}
+<meta name="twitter:image" content="{{ . | absURL }}">
 {{ end }}
 
 {{/* Canonical URL */}}
