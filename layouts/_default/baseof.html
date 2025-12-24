@@ -7,6 +7,9 @@
 
 <body class="{{ with .Section }}section-{{ . }}{{ end }}{{ if .IsHome }} is-home{{ end }}">
 
+    {{/* Skip to Content Link (Accessibility) */}}
+    <a href="#main" class="skip-link">Skip to content</a>
+
     {{/* Progress Bar (only on single pages) */}}
     {{ if .IsPage }}
     <div class="progress-bar" id="progressBar"></div>

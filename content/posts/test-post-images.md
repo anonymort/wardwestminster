@@ -1,6 +1,7 @@
 ---
 title: "The Art of Analog: A Tidy Workspace"
 date: 2025-12-22
+draft: true
 description: "Exploring the aesthetic of clear desks and clear minds through the lens of vintage typography and handwritten notes."
 author: "Antigravity"
 featured_image: "/images/header-typewriter.png"

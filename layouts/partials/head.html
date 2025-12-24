@@ -40,6 +40,24 @@
 {{ with .Description | default .Site.Params.description }}
 <meta name="twitter:description" content="{{ . }}">
 {{ end }}
+{{ if .IsPage }}
+{{ $twitterImage := .Params.featured_image | default .Params.image }}
+{{ with $twitterImage }}
+{{ $imgResource := resources.Get (strings.TrimPrefix "/" .) }}
+{{ if $imgResource }}
+<meta name="twitter:image" content="{{ $imgResource.Permalink }}">
+{{ else }}
+<meta name="twitter:image" content="{{ . | absURL }}">
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{/* Article Modified Time (for updated content) */}}
+{{ if .IsPage }}
+{{ if and .Params.lastmod (ne (.Params.lastmod.Format "2006-01-02") (.Date.Format "2006-01-02")) }}
+<meta property="article:modified_time" content="{{ .Params.lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+{{ end }}
+{{ end }}
 
 {{/* Canonical URL */}}
 <link rel="canonical" href="{{ .Permalink }}">

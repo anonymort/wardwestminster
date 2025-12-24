@@ -102,12 +102,13 @@
 
     {{/* Featured Image */}}
     {{ with .Params.featured_image }}
-    <div class="article-featured-image">
+    <div class="article-featured-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
         <figure>
             {{ partial "picture.html" (dict "src" . "alt" ($.Params.featured_image_alt | default $.Title) "class"
             "featured-image") }}
+            <meta itemprop="url" content="{{ . | absURL }}">
             {{ with $.Params.featured_image_caption }}
-            <figcaption>{{ . | markdownify }}</figcaption>
+            <figcaption itemprop="caption">{{ . | markdownify }}</figcaption>
             {{ end }}
         </figure>
     </div>

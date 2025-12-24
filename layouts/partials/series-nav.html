@@ -18,23 +18,24 @@
 {{ $seriesPages = $seriesPages.ByParam "series_weight" }}
 {{ $totalParts := len $seriesPages }}
 
-{{/* Find current position and adjacent pages */}}
+{{/* Find current position and adjacent pages in single loop */}}
 {{ $currentIndex := 0 }}
 {{ $prevPage := false }}
 {{ $nextPage := false }}
+{{ $foundCurrent := false }}
 
 {{ range $index, $page := $seriesPages }}
-    {{ if eq $page.Permalink $currentPage.Permalink }}
+    {{ if $foundCurrent }}
+        {{/* This is the page after current - set as next and stop looking */}}
+        {{ if not $nextPage }}
+            {{ $nextPage = $page }}
+        {{ end }}
+    {{ else if eq $page.Permalink $currentPage.Permalink }}
         {{ $currentIndex = add $index 1 }}
-    {{ end }}
-{{ end }}
-
-{{ range $index, $page := $seriesPages }}
-    {{ if eq (add $index 2) $currentIndex }}
+        {{ $foundCurrent = true }}
+    {{ else }}
+        {{/* Haven't found current yet - this could be prev */}}
         {{ $prevPage = $page }}
-    {{ end }}
-    {{ if eq $index $currentIndex }}
-        {{ $nextPage = $page }}
     {{ end }}
 {{ end }}
 
@@ -60,7 +61,7 @@
                 </svg>
                 Previous
             </span>
-            <span class="series-nav-link-title">{{ $prevPage.Title | truncate 50 }}</span>
+            <span class="series-nav-link-title" title="{{ $prevPage.Title }}">{{ $prevPage.Title | truncate 50 }}</span>
         </a>
         {{ else }}
         <div class="series-nav-link series-nav-prev series-nav-disabled"></div>
@@ -74,7 +75,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
             </span>
-            <span class="series-nav-link-title">{{ $nextPage.Title | truncate 50 }}</span>
+            <span class="series-nav-link-title" title="{{ $nextPage.Title }}">{{ $nextPage.Title | truncate 50 }}</span>
         </a>
         {{ else }}
         <div class="series-nav-link series-nav-next series-nav-disabled"></div>

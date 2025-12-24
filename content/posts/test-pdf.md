@@ -1,7 +1,7 @@
 ---
 title: "Test PDF Embedding"
 date: 2025-12-23T00:20:00Z
-draft: false
+draft: true
 categories: ["Tech"]
 tags: ["Test", "PDF"]
 author: "Dr Matt Kneale"

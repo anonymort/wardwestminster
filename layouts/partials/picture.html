@@ -37,8 +37,8 @@ Usage: {{ partial "picture.html" (dict "src" .Params.image "alt" "Text" "class" 
         width="{{ $img.Width }}" height="{{ $img.Height }}">
 </picture>
 {{ else }}
-{{/* 3. Fallback: Static File (not processed) */}}
-<img src="{{ $src | relURL }}" alt="{{ $alt }}" class="{{ $class }}" loading="{{ $loading }}">
+{{/* 3. Fallback: Static File (not processed) - dimensions unavailable */}}
+<img src="{{ $src | relURL }}" alt="{{ $alt }}" class="{{ $class }}" loading="{{ $loading }}" decoding="async">
 {{ end }}
 
 {{ end }}
