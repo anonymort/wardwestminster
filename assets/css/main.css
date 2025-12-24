@@ -159,15 +159,17 @@ body {
     height: 3px;
     background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
     z-index: 1001; /* z-index: progress-bar */
-    transition: width 0.08s linear, opacity 0.15s ease;
+    transition: width 0.08s linear, opacity 0.15s ease, visibility 0.15s ease;
     pointer-events: none;
     will-change: width, opacity;
     transform: translateZ(0); /* Force GPU layer for smoother rendering */
     opacity: 0; /* Hidden by default, shown when active */
+    visibility: hidden; /* Fully hide when not active to prevent rendering artifacts */
 }
 
 .progress-bar.active {
     opacity: 1;
+    visibility: visible;
 }
 
 /* ============================================
