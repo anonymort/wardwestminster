@@ -1,6 +1,6 @@
 {{/* Social Share Buttons */}}
-{{ $title := .Title | urlquery }}
-{{ $url := .Permalink | urlquery }}
+{{ $title := .Title }}
+{{ $url := .Permalink }}
 {{ $twitterHandle := .Site.Params.social.twitter | default "wardwestminster" }}
 {{ $blueskyHandle := .Site.Params.social.bluesky | default "wardwestminster.bsky.social" }}
 
@@ -8,7 +8,7 @@
     <span class="share-label">Share</span>
     <div class="share-links">
         {{/* X / Twitter - includes via tag for @wardwestminster */}}
-        <a href="https://twitter.com/intent/tweet?text={{ $title }}&url={{ $url }}&via={{ $twitterHandle }}"
+        <a href="https://twitter.com/intent/tweet?{{ (querify "text" $title "url" $url "via" $twitterHandle) | safeURL }}"
            class="share-link share-link-x"
            target="_blank"
            rel="noopener noreferrer"
@@ -20,7 +20,7 @@
         </a>
 
         {{/* Bluesky */}}
-        <a href="https://bsky.app/intent/compose?text={{ $title }}%20{{ $url }}%20via%20%40{{ $blueskyHandle }}"
+        <a href="https://bsky.app/intent/compose?{{ (querify "text" (printf "%s %s via @%s" $title $url $blueskyHandle)) | safeURL }}"
            class="share-link share-link-bluesky"
            target="_blank"
            rel="noopener noreferrer"
@@ -32,7 +32,7 @@
         </a>
 
         {{/* LinkedIn */}}
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $url }}"
+        <a href="https://www.linkedin.com/sharing/share-offsite/?{{ (querify "url" $url) | safeURL }}"
            class="share-link share-link-linkedin"
            target="_blank"
            rel="noopener noreferrer"
@@ -44,7 +44,7 @@
         </a>
 
         {{/* Facebook */}}
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $url }}"
+        <a href="https://www.facebook.com/sharer/sharer.php?{{ (querify "u" $url) | safeURL }}"
            class="share-link share-link-facebook"
            target="_blank"
            rel="noopener noreferrer"
@@ -56,7 +56,7 @@
         </a>
 
         {{/* Email */}}
-        <a href="mailto:?subject={{ $title }}&body=Check out this article: {{ $url }}"
+        <a href="mailto:?{{ (querify "subject" $title "body" (printf "Check out this article: %s" $url)) | safeURL }}"
            class="share-link share-link-email"
            aria-label="Share via Email"
            title="Share via Email">
