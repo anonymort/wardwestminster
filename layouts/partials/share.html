@@ -82,21 +82,20 @@
 
 <script>
 (function() {
-    // Copy link functionality with visual feedback
+    // Copy link functionality with visual feedback (Clipboard API only - 95%+ browser support)
     document.querySelectorAll('.share-link-copy').forEach(function(button) {
         button.addEventListener('click', function() {
             var url = this.getAttribute('data-url');
             var btn = this;
 
-            // Check if clipboard API is available
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(url).then(function() {
                     showCopied(btn);
                 }).catch(function() {
-                    fallbackCopy(url, btn);
+                    showError(btn);
                 });
             } else {
-                fallbackCopy(url, btn);
+                showError(btn);
             }
         });
     });
@@ -110,20 +109,11 @@
         }, 2000);
     }
 
-    function fallbackCopy(text, button) {
-        var textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-9999px';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showCopied(button);
-        } catch (err) {
-            button.setAttribute('title', 'Copy failed');
-        }
-        document.body.removeChild(textArea);
+    function showError(button) {
+        button.setAttribute('title', 'Copy not supported');
+        setTimeout(function() {
+            button.setAttribute('title', 'Copy link');
+        }, 2000);
     }
 })();
 </script>

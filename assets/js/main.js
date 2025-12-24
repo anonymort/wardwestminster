@@ -65,7 +65,11 @@
         }
     }
 
-    // Mobile menu toggle
+    // Mobile menu toggle with focus trap
+    let focusableElements = [];
+    let firstFocusable = null;
+    let lastFocusable = null;
+
     function toggleMobileMenu() {
         const isActive = mobileMenu.classList.contains('active');
 
@@ -76,6 +80,40 @@
         // Accessibility
         navToggle.setAttribute('aria-expanded', !isActive);
         mobileMenu.setAttribute('aria-hidden', isActive);
+
+        // Focus trap management
+        if (!isActive) {
+            // Menu is opening - set up focus trap
+            focusableElements = mobileMenu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+            if (focusableElements.length > 0) {
+                firstFocusable = focusableElements[0];
+                lastFocusable = focusableElements[focusableElements.length - 1];
+                firstFocusable.focus();
+            }
+        } else {
+            // Menu is closing - return focus to toggle
+            navToggle.focus();
+        }
+    }
+
+    function handleFocusTrap(e) {
+        if (!mobileMenu.classList.contains('active')) return;
+
+        if (e.key === 'Tab') {
+            if (e.shiftKey) {
+                // Shift + Tab
+                if (document.activeElement === firstFocusable) {
+                    e.preventDefault();
+                    lastFocusable.focus();
+                }
+            } else {
+                // Tab
+                if (document.activeElement === lastFocusable) {
+                    e.preventDefault();
+                    firstFocusable.focus();
+                }
+            }
+        }
     }
 
     if (navToggle && mobileMenu) {
@@ -90,11 +128,12 @@
             });
         });
 
-        // Close menu on escape
+        // Close menu on escape and handle focus trap
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
                 toggleMobileMenu();
             }
+            handleFocusTrap(e);
         });
     }
 
@@ -252,10 +291,14 @@
         async function loadSearchIndex() {
             try {
                 const response = await fetch('/index.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
                 searchData = await response.json();
                 searchIndex = searchData;
             } catch (e) {
                 console.error('Failed to load search index:', e);
+                searchResults.innerHTML = '<p class="search-no-results">Search is temporarily unavailable. Please try again later.</p>';
             }
         }
 

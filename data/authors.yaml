@@ -8,3 +8,11 @@
   avatar: "/images/authors/matt-kneale.jpg"
   twitter: "drmattuk"
   bluesky: "drmattuk.bsky.social"
+
+"Editorial":
+  name: "Editorial"
+  bio: "The Ward&Westminster editorial team. Long-form journalism at the intersection of medicine, technology, and politics."
+
+"Antigravity":
+  name: "Antigravity"
+  bio: "Test author for development purposes."
