@@ -86,15 +86,44 @@
     document.querySelectorAll('.share-link-copy').forEach(function(button) {
         button.addEventListener('click', function() {
             var url = this.getAttribute('data-url');
-            navigator.clipboard.writeText(url).then(function() {
-                button.classList.add('copied');
-                button.setAttribute('title', 'Copied!');
-                setTimeout(function() {
-                    button.classList.remove('copied');
-                    button.setAttribute('title', 'Copy link');
-                }, 2000);
-            });
+            var btn = this;
+
+            // Check if clipboard API is available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function() {
+                    showCopied(btn);
+                }).catch(function() {
+                    fallbackCopy(url, btn);
+                });
+            } else {
+                fallbackCopy(url, btn);
+            }
         });
     });
+
+    function showCopied(button) {
+        button.classList.add('copied');
+        button.setAttribute('title', 'Copied!');
+        setTimeout(function() {
+            button.classList.remove('copied');
+            button.setAttribute('title', 'Copy link');
+        }, 2000);
+    }
+
+    function fallbackCopy(text, button) {
+        var textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showCopied(button);
+        } catch (err) {
+            button.setAttribute('title', 'Copy failed');
+        }
+        document.body.removeChild(textArea);
+    }
 })();
 </script>

@@ -75,6 +75,7 @@
 
         // Accessibility
         navToggle.setAttribute('aria-expanded', !isActive);
+        mobileMenu.setAttribute('aria-hidden', isActive);
     }
 
     if (navToggle && mobileMenu) {
@@ -286,8 +287,15 @@
             `).join('');
         }
 
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function highlightTerms(text, terms) {
-            let result = text;
+            // First escape HTML to prevent XSS
+            let result = escapeHtml(text);
             terms.forEach(term => {
                 const regex = new RegExp(`(${escapeRegex(term)})`, 'gi');
                 result = result.replace(regex, '<mark>$1</mark>');
