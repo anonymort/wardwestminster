@@ -79,7 +79,7 @@ layouts/_default/baseof.html    # Base template (head, fonts, asset pipeline)
 | `layouts/partials/reading-time.html` | Medium-style reading time (265 WPM + images + code) |
 | `layouts/partials/toc.html` | Auto-generated table of contents |
 | `layouts/partials/related.html` | Related articles section |
-| `layouts/partials/share.html` | Social share buttons (X, LinkedIn, Email, Copy) |
+| `layouts/partials/share.html` | Social share buttons (X, Bluesky, LinkedIn, Facebook, Email, Copy) |
 | `layouts/partials/head-custom.html` | User custom styles/meta (extension point) |
 | `layouts/partials/scripts-custom.html` | User custom JS/analytics (extension point) |
 | `layouts/partials/series-nav.html` | Series "Part X of Y" navigation |
@@ -232,6 +232,11 @@ title = "Ward&Westminster"
   tagline = "Medicine · Tech · Politics"
   author = "Author Name"
   topics = ["Medicine", "Tech", "Politics"]  # Hero section pills
+
+  # Social media handles for share buttons (without @ symbol)
+  [params.social]
+    twitter = "wardwestminster"
+    bluesky = "wardwestminster.bsky.social"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]  # JSON for search
