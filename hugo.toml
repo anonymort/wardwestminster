@@ -34,6 +34,11 @@ enableGitInfo = false
   # Hero section topic pills (defaults to Medicine, Tech, Politics)
   topics = ["Medicine", "Tech", "Politics"]
 
+  # Social media handles for share buttons (without @ symbol)
+  [params.social]
+    twitter = "wardwestminster"
+    bluesky = "wardwestminster.bsky.social"
+
 # Main navigation menu
 [[menus.main]]
   name = "Home"
