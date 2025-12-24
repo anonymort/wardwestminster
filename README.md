@@ -17,6 +17,7 @@ An elegant, mobile-first Hugo theme for long-form journalism covering medicine, 
 - **RSS feeds** for home and sections
 - **Social sharing** with X, Bluesky, LinkedIn, Facebook, Email, and copy-to-clipboard
 - **Multi-part series** with "Part X of Y" navigation and series landing pages
+- **Article corrections & versioning** with type badges and update indicators
 - **Client-side search** with instant results
 
 ## Installation
@@ -89,8 +90,33 @@ tags: ["topic", "another-topic"]
 featured_image: "/images/featured.jpg"
 series: ["Series Name"]    # Optional: for multi-part articles
 series_weight: 1           # Optional: part number (1, 2, 3...)
+lastmod: 2025-01-20        # Optional: last modified date
+corrections:               # Optional: list of corrections
+  - date: 2025-01-18
+    type: correction       # correction, update, or clarification
+    description: "Fixed error in statistics"
 ---
 ```
+
+### Corrections & Versioning
+
+Track and display article corrections with visual type badges:
+
+```yaml
+lastmod: 2025-01-20
+corrections:
+  - date: 2025-01-18
+    type: correction       # Red badge - factual errors
+    description: "Corrected percentage from 45% to 35%"
+  - date: 2025-01-20
+    type: update           # Burgundy badge - new information
+    description: "Added statement from spokesperson"
+  - date: 2025-01-19
+    type: clarification    # Blue badge - clarity improvements
+    description: "Clarified timeline in paragraph 3"
+```
+
+When `lastmod` differs from `date`, an "Updated" indicator appears in the article meta.
 
 ### Shortcodes
 
