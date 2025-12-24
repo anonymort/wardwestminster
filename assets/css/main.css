@@ -1704,6 +1704,51 @@ body.no-scroll {
     height: 18px;
 }
 
+/* Copy button states */
+.share-link-copy {
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.share-link-copy .icon-check {
+    display: none;
+}
+
+.share-link-copy.copied {
+    background: var(--color-accent);
+    color: white;
+}
+
+.share-link-copy.copied .icon-link {
+    display: none;
+}
+
+.share-link-copy.copied .icon-check {
+    display: block;
+}
+
+/* Platform-specific hover colors (subtle, non-disruptive) */
+.share-link-x:hover {
+    background: #000;
+}
+
+.share-link-bluesky:hover {
+    background: #0085ff;
+}
+
+.share-link-linkedin:hover {
+    background: #0077b5;
+}
+
+.share-link-facebook:hover {
+    background: #1877f2;
+}
+
+.share-link-email:hover {
+    background: var(--color-accent);
+}
+
 /* ============================================
    Back to Top Button
    ============================================ */
