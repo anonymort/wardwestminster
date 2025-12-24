@@ -13,7 +13,7 @@
             {{/* Configurable topic pills - set in params.topics or use defaults */}}
             {{ $topics := .Site.Params.topics | default (slice "Medicine" "Tech" "Politics") }}
             {{ range $topics }}
-            <a href="{{ " /categories/" | relLangURL }}{{ . | urlize }}/" class="topic-pill">{{ . }}</a>
+            <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}/" class="topic-pill">{{ . }}</a>
             {{ end }}
         </div>
     </div>
@@ -28,8 +28,7 @@
     <div class="featured-content">
         <span class="featured-label">Latest</span>
         {{ with .Params.categories }}
-        <a href="{{ " /categories/" | relLangURL }}{{ index . 0 | urlize }}/" class="featured-category">{{ index . 0
-            }}</a>
+        <a href="{{ "/categories/" | relLangURL }}{{ index . 0 | urlize }}/" class="featured-category">{{ index . 0 }}</a>
         {{ end }}
         <h2 class="featured-title">
             <a href="{{ .Permalink }}">{{ .Title }}</a>
@@ -39,7 +38,7 @@
         {{ end }}
         <div class="featured-meta">
             {{ with .Params.author }}<span class="author">{{ . }}</span> · {{ end }}
-            <time datetime="{{ .Date.Format " 2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
             · {{ .ReadingTime }} min read
         </div>
         <a href="{{ .Permalink }}" class="featured-cta">Read article →</a>
@@ -53,7 +52,7 @@
 <section class="article-grid-section">
     <div class="section-header-bar">
         <h3 class="section-title">More Articles</h3>
-        <a href="{{ " /posts/" | relLangURL }}" class="section-link">View all →</a>
+        <a href="{{ "/posts/" | relLangURL }}" class="section-link">View all →</a>
     </div>
 
     <div class="article-grid">

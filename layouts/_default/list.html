@@ -25,8 +25,7 @@
         {{/* Featured Image */}}
         {{ with .Params.featured_image }}
         <div class="article-card-image">
-            {{ partial "picture.html" (dict "src" . "alt" ($.Params.featured_image_alt | default $.Title) "loading"
-            "lazy") }}
+            {{ partial "picture.html" (dict "src" . "alt" ($page.Params.featured_image_alt | default $page.Title) "loading" "lazy") }}
         </div>
         {{ end }}
 

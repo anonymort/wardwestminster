@@ -27,14 +27,14 @@
         </div>
         {{ end }}
 
-        {{/* Categories / Topics */}}
+        {{/* Categories / Topics - show first 5 categories with at least 1 article */}}
         {{ if .Site.Taxonomies.categories }}
         <div class="footer-links">
             <h4>Topics</h4>
             <ul>
-                {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
-                {{ if lt (len $taxonomy) 10 }}
-                <li><a href="{{ "/categories/" | relLangURL }}{{ $name | urlize }}/">{{ $name | humanize }}</a></li>
+                {{ range $index, $elem := .Site.Taxonomies.categories.ByCount }}
+                {{ if lt $index 5 }}
+                <li><a href="{{ "/categories/" | relLangURL }}{{ .Name | urlize }}/">{{ .Name | humanize }}</a></li>
                 {{ end }}
                 {{ end }}
             </ul>
