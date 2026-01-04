@@ -83,5 +83,80 @@
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
 {{ end }}
 
+{{/* JSON-LD Structured Data */}}
+{{ if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Site.BaseURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ .Site.BaseURL }}search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{{ else if .IsPage }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ .Title }}",
+  "description": "{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ with .Params.lastmod }}{{ .Format "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ $.Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{ with .Params.author }}{{ . }}{{ else }}{{ .Site.Params.author }}{{ end }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "wordCount": {{ .WordCount }}{{ $image := .Params.featured_image | default .Params.image }}{{ with $image }},
+  "image": "{{ . | absURL }}"{{ end }}{{ with .Params.categories }},
+  "articleSection": "{{ index . 0 }}"{{ end }}{{ with .Params.tags }},
+  "keywords": "{{ delimit . ", " }}"{{ end }}
+}
+</script>
+{{ end }}
+
+{{/* Breadcrumb JSON-LD */}}
+{{ if not .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }{{ if .Section }},
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ .Section | title }}",
+      "item": "{{ .Site.BaseURL }}{{ .Section }}/"
+    }{{ end }}{{ if .IsPage }},
+    {
+      "@type": "ListItem",
+      "position": {{ if .Section }}3{{ else }}2{{ end }},
+      "name": "{{ .Title }}"
+    }{{ end }}
+  ]
+}
+</script>
+{{ end }}
+
 {{/* Custom Head Content */}}
 {{ partial "head-custom.html" . }}
